@@ -23,6 +23,8 @@ import 'package:gif_world/utilities/routes/route_utilities.dart';
 import 'package:gif_world/utilities/settings/variable_utilities.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../../widgets/svg_viwer_widget.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -75,254 +77,307 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             PopUpMenuWidget(),
           ],
-          bottom: TabBar(
-            controller: _tabController,
-            unselectedLabelColor:
-                VariableUtilities.theme.whiteColor.withOpacity(0.5),
-            tabs: const [
-              TabBarTitleWidget(
-                lable: 'Trending',
-              ),
-              TabBarTitleWidget(
-                lable: 'Featured',
-              ),
-              TabBarTitleWidget(
-                lable: 'Explore',
-              ),
-            ],
-            onTap: (int value) async {
-              debugPrint('PAGE INDEX ----->>> $value');
-              if (value == 0) {
-                if (_homeScreenController.trendingGifList.isEmpty) {
-                  await _homeScreenController.trendingGif(context: context);
-                }
-              } else if (value == 1) {
-                if (_homeScreenController.featuredTagList.isEmpty) {
-                  SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
-                      _homeScreenController.featuredGif(context: context));
-                }
-              } else {
-                if (_homeScreenController.exploreTagList.isEmpty) {
-                  SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
-                      _homeScreenController.exploreGif(context: context));
-                }
-              }
-            },
-          ),
+          // bottom: TabBar(
+          //   controller: _tabController,
+          //   unselectedLabelColor:
+          //       VariableUtilities.theme.whiteColor.withOpacity(0.5),
+          //   tabs: const [
+          //     TabBarTitleWidget(
+          //       lable: 'Trending',
+          //     ),
+          //     TabBarTitleWidget(
+          //       lable: 'Featured',
+          //     ),
+          //     TabBarTitleWidget(
+          //       lable: 'Explore',
+          //     ),
+          //   ],
+          //   onTap: (int value) async {
+          //     debugPrint('PAGE INDEX ----->>> $value');
+          //     if (value == 0) {
+          //       if (_homeScreenController.trendingGifList.isEmpty) {
+          //         await _homeScreenController.trendingGif(context: context);
+          //       }
+          //     } else if (value == 1) {
+          //       if (_homeScreenController.featuredTagList.isEmpty) {
+          //         SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
+          //             _homeScreenController.featuredGif(context: context));
+          //       }
+          //     } else {
+          //       if (_homeScreenController.exploreTagList.isEmpty) {
+          //         SchedulerBinding.instance.addPostFrameCallback((timeStamp) =>
+          //             _homeScreenController.exploreGif(context: context));
+          //       }
+          //     }
+          //   },
+          // ),
         ),
         body: GetBuilder<HomeScreenController>(
             init: _homeScreenController,
             builder: (_) {
-              return Stack(
-                alignment: Alignment.bottomCenter,
+              return Column(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-                    child: TabBarView(
-                      controller: _tabController,
-                      physics: NeverScrollableScrollPhysics(),
-                      dragStartBehavior: DragStartBehavior.start,
-                      children: [
-                        Stack(
-                          children: [
-                            _homeScreenController.trendingGifList.isNotEmpty
-                                ? StaggeredGridView.countBuilder(
-                                    controller: _trendingScrollController,
-                                    crossAxisSpacing: 0.5,
-                                    mainAxisSpacing: 0.5,
-                                    itemCount: _homeScreenController
-                                        .trendingGifList.length,
-                                    physics: ScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Get.toNamed(
-                                              RouteUtilities.imageViewScreen,
-                                              arguments: DetailsScreenArguments(
-                                                  imageUrl:
-                                                      _homeScreenController
-                                                          .trendingGifList[
-                                                              index]['gif']!
-                                                          .url));
-                                        },
-                                        child: ListImageViewWidget(
-                                          gifUrl: _homeScreenController
-                                              .trendingGifList[index]['gif']!
-                                              .url!,
-                                          isLableShow: false,
-                                          lable: '',
-                                        ),
-                                      );
-                                    },
-                                    crossAxisCount: 2,
-                                    staggeredTileBuilder: (int index) {
-                                      // if (_homeScreenController
-                                      //         .trendingDynamicList[index]
-                                      //     is ImageClass) {
-                                      //   return StaggeredTile.count(2, 1);
-                                      // } else {
-                                      //   return StaggeredTile.count(1, 1);
-                                      // }
-                                      return StaggeredTile.count(1, 1);
-                                    },
-                                  )
-                                : Visibility(
-                                    visible: _homeScreenController
-                                        .isTrendingCircularProgressIndicator,
-                                    child: Center(
-                                      child: CircularProgressIndicatorWidget(),
-                                    ),
-                                  ),
-                            Visibility(
-                              visible:
-                                  _homeScreenController.isTrendingNodataWidget,
-                              child: Center(
-                                child: NoDataWidget(),
-                              ),
-                            ),
-                            Visibility(
-                              visible: _homeScreenController.isNoInternetWidget,
-                              child: Center(
-                                child: NoInternetWidget(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          children: [
-                            _homeScreenController.featuredTagList.isNotEmpty
-                                ? StaggeredGridView.countBuilder(
-                                    controller: _trendingScrollController,
-                                    crossAxisSpacing: 0.5,
-                                    mainAxisSpacing: 0.5,
-                                    itemCount: _homeScreenController
-                                        .featuredTagList.length,
-                                    physics: ScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Get.toNamed(
-                                              RouteUtilities.imageListScreen,
-                                              arguments:
-                                                  ImageListScreenArguments(
-                                                categoryName:
-                                                    _homeScreenController
-                                                        .featuredTagList[index]
-                                                        .searchItem,
-                                              ));
-                                        },
-                                        child: ListImageViewWidget(
-                                          gifUrl: _homeScreenController
-                                              .featuredTagList[index].image,
-                                          isLableShow: true,
-                                          lable: _homeScreenController
-                                              .featuredTagList[index].name,
-                                        ),
-                                      );
-                                    },
-                                    crossAxisCount: 2,
-                                    staggeredTileBuilder: (int index) {
-                                      // if (_homeScreenController
-                                      //         .featuredDynamicList[index]
-                                      //         .image ==
-                                      //     null) {
-                                      //   return StaggeredTile.count(2, 1);
-                                      // } else {
-                                      //   return StaggeredTile.count(1, 1);
-                                      // }
-                                      return StaggeredTile.count(1, 1);
-                                    },
-                                  )
-                                : Visibility(
-                                    visible: _homeScreenController
-                                        .isFeaturedCircularProgressIndicator,
-                                    child: Center(
-                                      child: CircularProgressIndicatorWidget(),
-                                    ),
-                                  ),
-                            Visibility(
-                              visible:
-                                  _homeScreenController.isFeaturedNodataWidget,
-                              child: Center(
-                                child: NoDataWidget(),
-                              ),
-                            ),
-                            Visibility(
-                              visible: _homeScreenController.isNoInternetWidget,
-                              child: Center(
-                                child: NoInternetWidget(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          children: [
-                            _homeScreenController.exploreTagList.isNotEmpty
-                                ? StaggeredGridView.countBuilder(
-                                    controller: _trendingScrollController,
-                                    crossAxisSpacing: 0.5,
-                                    mainAxisSpacing: 0.5,
-                                    itemCount: _homeScreenController
-                                        .exploreTagList.length,
-                                    physics: ScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Get.toNamed(
-                                              RouteUtilities.imageListScreen,
-                                              arguments:
-                                                  ImageListScreenArguments(
-                                                categoryName:
-                                                    _homeScreenController
-                                                        .exploreTagList[index]
-                                                        .searchterm,
-                                              ));
-                                        },
-                                        child: ListImageViewWidget(
-                                          gifUrl: _homeScreenController
-                                              .exploreTagList[index].image,
-                                          isLableShow: true,
-                                          lable: _homeScreenController
-                                              .exploreTagList[index].name,
-                                        ),
-                                      );
-                                    },
-                                    crossAxisCount: 2,
-                                    staggeredTileBuilder: (int index) {
-                                      return StaggeredTile.count(1, 1);
-                                    },
-                                  )
-                                : Visibility(
-                                    visible: _homeScreenController
-                                        .isExploreCircularProgressIndicator,
-                                    child: Center(
-                                      child: CircularProgressIndicatorWidget(),
-                                    ),
-                                  ),
-                            Visibility(
-                              visible:
-                                  _homeScreenController.isExploreNoDataWidget,
-                              child: Center(
-                                child: NoDataWidget(),
-                              ),
-                            ),
-                            Visibility(
-                              visible: _homeScreenController.isNoInternetWidget,
-                              child: Center(
-                                child: NoInternetWidget(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    padding: const EdgeInsets.symmetric(vertical: 15.0,horizontal: 10),
+                    child: SizedBox(
+                      height: 70,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: _homeScreenController.imagesList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.all( 15),
+                            height: 70,
+                            width: 70,
+                            child: CustomSvgView(imageUrl: _homeScreenController.imagesList[index]),
+                            decoration: BoxDecoration(
+                              // image: DecorationImage(image: AssetImage()),
+                                shape: BoxShape.circle,
+                                color: Colors.pinkAccent.withOpacity(0.6),
+                                border: Border.all(width: 3,
+                                    color:
+                                        VariableUtilities.theme.primaryColor)),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    child: BannerAdWidget(
-                      adSize: AdSize.fullBanner,
-                      key: UniqueKey(),
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 4),
+                          child: TabBarView(
+                            controller: _tabController,
+                            physics: NeverScrollableScrollPhysics(),
+                            dragStartBehavior: DragStartBehavior.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  _homeScreenController
+                                          .trendingGifList.isNotEmpty
+                                      ? StaggeredGridView.countBuilder(
+                                          controller: _trendingScrollController,
+                                          crossAxisSpacing: 0.5,
+                                          mainAxisSpacing: 0.5,
+                                          itemCount: _homeScreenController
+                                              .trendingGifList.length,
+                                          physics: ScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    RouteUtilities
+                                                        .imageViewScreen,
+                                                    arguments: DetailsScreenArguments(
+                                                        imageUrl:
+                                                            _homeScreenController
+                                                                .trendingGifList[
+                                                                    index]
+                                                                    ['gif']!
+                                                                .url));
+                                              },
+                                              child: ListImageViewWidget(
+                                                gifUrl: _homeScreenController
+                                                    .trendingGifList[index]
+                                                        ['gif']!
+                                                    .url!,
+                                                isLableShow: false,
+                                                lable: '',
+                                              ),
+                                            );
+                                          },
+                                          crossAxisCount: 2,
+                                          staggeredTileBuilder: (int index) {
+                                            // if (_homeScreenController
+                                            //         .trendingDynamicList[index]
+                                            //     is ImageClass) {
+                                            //   return StaggeredTile.count(2, 1);
+                                            // } else {
+                                            //   return StaggeredTile.count(1, 1);
+                                            // }
+                                            return StaggeredTile.count(1, 1);
+                                          },
+                                        )
+                                      : Visibility(
+                                          visible: _homeScreenController
+                                              .isTrendingCircularProgressIndicator,
+                                          child: Center(
+                                            child:
+                                                CircularProgressIndicatorWidget(),
+                                          ),
+                                        ),
+                                  Visibility(
+                                    visible: _homeScreenController
+                                        .isTrendingNodataWidget,
+                                    child: Center(
+                                      child: NoDataWidget(),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: _homeScreenController
+                                        .isNoInternetWidget,
+                                    child: Center(
+                                      child: NoInternetWidget(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                children: [
+                                  _homeScreenController
+                                          .featuredTagList.isNotEmpty
+                                      ? StaggeredGridView.countBuilder(
+                                          controller: _trendingScrollController,
+                                          crossAxisSpacing: 0.5,
+                                          mainAxisSpacing: 0.5,
+                                          itemCount: _homeScreenController
+                                              .featuredTagList.length,
+                                          physics: ScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    RouteUtilities
+                                                        .imageListScreen,
+                                                    arguments:
+                                                        ImageListScreenArguments(
+                                                      categoryName:
+                                                          _homeScreenController
+                                                              .featuredTagList[
+                                                                  index]
+                                                              .searchItem,
+                                                    ));
+                                              },
+                                              child: ListImageViewWidget(
+                                                gifUrl: _homeScreenController
+                                                    .featuredTagList[index]
+                                                    .image,
+                                                isLableShow: true,
+                                                lable: _homeScreenController
+                                                    .featuredTagList[index]
+                                                    .name,
+                                              ),
+                                            );
+                                          },
+                                          crossAxisCount: 2,
+                                          staggeredTileBuilder: (int index) {
+                                            // if (_homeScreenController
+                                            //         .featuredDynamicList[index]
+                                            //         .image ==
+                                            //     null) {
+                                            //   return StaggeredTile.count(2, 1);
+                                            // } else {
+                                            //   return StaggeredTile.count(1, 1);
+                                            // }
+                                            return StaggeredTile.count(1, 1);
+                                          },
+                                        )
+                                      : Visibility(
+                                          visible: _homeScreenController
+                                              .isFeaturedCircularProgressIndicator,
+                                          child: Center(
+                                            child:
+                                                CircularProgressIndicatorWidget(),
+                                          ),
+                                        ),
+                                  Visibility(
+                                    visible: _homeScreenController
+                                        .isFeaturedNodataWidget,
+                                    child: Center(
+                                      child: NoDataWidget(),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: _homeScreenController
+                                        .isNoInternetWidget,
+                                    child: Center(
+                                      child: NoInternetWidget(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                children: [
+                                  _homeScreenController
+                                          .exploreTagList.isNotEmpty
+                                      ? StaggeredGridView.countBuilder(
+                                          controller: _trendingScrollController,
+                                          crossAxisSpacing: 0.5,
+                                          mainAxisSpacing: 0.5,
+                                          itemCount: _homeScreenController
+                                              .exploreTagList.length,
+                                          physics: ScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    RouteUtilities
+                                                        .imageListScreen,
+                                                    arguments:
+                                                        ImageListScreenArguments(
+                                                      categoryName:
+                                                          _homeScreenController
+                                                              .exploreTagList[
+                                                                  index]
+                                                              .searchterm,
+                                                    ));
+                                              },
+                                              child: ListImageViewWidget(
+                                                gifUrl: _homeScreenController
+                                                    .exploreTagList[index]
+                                                    .image,
+                                                isLableShow: true,
+                                                lable: _homeScreenController
+                                                    .exploreTagList[index].name,
+                                              ),
+                                            );
+                                          },
+                                          crossAxisCount: 2,
+                                          staggeredTileBuilder: (int index) {
+                                            return StaggeredTile.count(1, 1);
+                                          },
+                                        )
+                                      : Visibility(
+                                          visible: _homeScreenController
+                                              .isExploreCircularProgressIndicator,
+                                          child: Center(
+                                            child:
+                                                CircularProgressIndicatorWidget(),
+                                          ),
+                                        ),
+                                  Visibility(
+                                    visible: _homeScreenController
+                                        .isExploreNoDataWidget,
+                                    child: Center(
+                                      child: NoDataWidget(),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: _homeScreenController
+                                        .isNoInternetWidget,
+                                    child: Center(
+                                      child: NoInternetWidget(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          child: BannerAdWidget(
+                            adSize: AdSize.fullBanner,
+                            key: UniqueKey(),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

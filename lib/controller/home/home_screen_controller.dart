@@ -9,7 +9,12 @@ import 'package:gif_world/model/home/trending_model.dart';
 import 'package:gif_world/src/widgets/toast_msg_widget.dart';
 import 'package:gif_world/utilities/api_utilities/show_alert_dailog_widget.dart';
 
+import '../../utilities/assets/asset_utilities.dart';
+
 class HomeScreenController extends GetxController {
+
+  List<String> imagesList=[AssetUtilities.sonImageSvg,AssetUtilities.nightImageSvg,AssetUtilities.cakeImageSvg,AssetUtilities.congratulationImageSvg,AssetUtilities.loveImageSvg,AssetUtilities.romanticImageSvg,AssetUtilities.happyImageSvg,AssetUtilities.sadImageSvg,AssetUtilities.funnyImageSvg];
+
   ///Trending GIF ------------------------------------------------------------------------------------------------------------
   TrendingsModel? trendingsModel;
 

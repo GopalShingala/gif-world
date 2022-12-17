@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/imac/DATA/GitHub/Trendo-Flutter/gif-world/build/google_mobile_ads/intermediates/res/merged/debug/color/common_google_signin_btn_tint.xml",
+        "source": "/Users/imac/.gradle/caches/transforms-3/425bc9102aec8f3d2ded6e1d1fb42950/transformed/jetified-play-services-base-18.0.0/res/color/common_google_signin_btn_tint.xml"
+    },
+    {
+        "merged": "/Users/imac/DATA/GitHub/Trendo-Flutter/gif-world/build/google_mobile_ads/intermediates/res/merged/debug/color/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/imac/.gradle/caches/transforms-3/425bc9102aec8f3d2ded6e1d1fb42950/transformed/jetified-play-services-base-18.0.0/res/color/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/imac/DATA/GitHub/Trendo-Flutter/gif-world/build/google_mobile_ads/intermediates/res/merged/debug/color/common_google_signin_btn_text_light.xml",
+        "source": "/Users/imac/.gradle/caches/transforms-3/425bc9102aec8f3d2ded6e1d1fb42950/transformed/jetified-play-services-base-18.0.0/res/color/common_google_signin_btn_text_light.xml"
+    }
+]

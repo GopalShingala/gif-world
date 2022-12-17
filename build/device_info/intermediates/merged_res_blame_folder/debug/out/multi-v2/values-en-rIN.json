@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/imac/DATA/GitHub/Trendo-Flutter/gif-world/build/device_info/intermediates/res/merged/debug/values-en-rIN/values-en-rIN.xml",
+            "map": [
+                {
+                    "source": "/Users/imac/.gradle/caches/transforms-3/05784a7e7dc18b6b186312a5564f85e5/transformed/core-1.6.0/res/values-en-rIN/values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/imac/DATA/GitHub/Trendo-Flutter/gif-world/build/device_info/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rIN/values-en-rIN.xml",
+            "map": [
+                {
+                    "source": "/Users/imac/.gradle/caches/transforms-3/05784a7e7dc18b6b186312a5564f85e5/transformed/core-1.6.0/res/values-en-rIN/values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}
